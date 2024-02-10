@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
 
+import productRoutes from "./routes/productRoutes.js"
 
 
 const port = process.env.PORT || 5000;
@@ -27,6 +28,8 @@ app.use(cookieParser());
 
 
 //ROUTES
+app.use('/api/products', productRoutes)
+
 app.get('/', (req, res) => {
     res.send('API is running...')
 });
