@@ -20,13 +20,19 @@ import APIFilters from '../utils/APIfilters.js';
 //@route  GET /api/products
 //@access Private/Admin
 const getProducts = asyncHandler (async (req, res) => {
-   
-    const apiFilters = new APIFilters(Product, req.query).search()
+    
+    const resPerPage = 4;
+
+    const apiFilters = new APIFilters(Product, req.query).search().filters()
    
     let products = await apiFilters.query;
     let filteredProductsCount = products.length;
+
+    apiFilters.pegination(resPerPage);
+    products = await apiFilters.query.clone();
    
    res.status(200).json({
+    resPerPage,
     filteredProductsCount,
     products
    })
