@@ -1,16 +1,34 @@
 import Product from '../models/poroductModel.js';
 import asyncHandler from '../middlewares/asyncHandler.js'
+import APIFilters from '../utils/APIfilters.js';
 
 
 
 //@desc   Gell all Product
 //@route  GET /api/products
-//@access Private
-const getProducts = asyncHandler (async (req, res) => {
-   const product = await Product.find();
+//@access Private/Admin
+// const getProducts = asyncHandler (async (req, res) => {
+//    const product = await Product.find();
 
+//    res.status(200).json({
+//     product
+//    })
+// });
+
+
+//@desc   Gell all Product
+//@route  GET /api/products
+//@access Private/Admin
+const getProducts = asyncHandler (async (req, res) => {
+   
+    const apiFilters = new APIFilters(Product, req.query).search()
+   
+    let products = await apiFilters.query;
+    let filteredProductsCount = products.length;
+   
    res.status(200).json({
-    product
+    filteredProductsCount,
+    products
    })
 });
 
@@ -29,7 +47,55 @@ const newProduct = asyncHandler (async (req, res) => {
 //@route   GET api/product/:id
 //@access  Public
 const getProductDetails = asyncHandler (async (req, res) => {
-    res.json('get product details')
+    const product = await Product.findById(req.params.id);
+
+    if(!product){
+        res.status(404);
+        throw new Error("Aucun produit trouvé")
+    }else{
+        res.status(200).json({
+            product 
+        })
+    }
+});
+
+//@desc    Update Product 
+//@route   PUT api/product/:id
+//@access  Public
+const updateProduct = asyncHandler (async (req, res) => {
+    let product = await Product.findById(req.params.id);
+
+    if(!product){
+        res.status(404);
+        throw new Error("Aucun produit trouvé")
+    }
+
+    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+        new: true
+    });
+
+    res.status(200).json({
+        product
+    });
+});
+
+
+//@desc     Delete Product
+//@route    DELETE api/products/:id
+//@access   Private/Admin
+const deleteProduct = asyncHandler(async(req, res) => {
+    const product = await Product.findById(req.params.id);
+
+    if(!product){
+        res.status(404);
+        throw new Error(" Aucun Produit trouvé")
+    }
+
+    await product.deleteOne();
+
+    res.status(200).json({
+        message: 'Produit supprimé'
+    });
 });
 
 
@@ -37,5 +103,7 @@ const getProductDetails = asyncHandler (async (req, res) => {
 export {
     newProduct,
     getProducts,
-    getProductDetails
+    getProductDetails,
+    updateProduct,
+    deleteProduct,
 }
