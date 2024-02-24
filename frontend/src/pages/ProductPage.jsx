@@ -7,6 +7,7 @@ import StarRatings from 'react-star-ratings';
 
 import {useGetProductDetailsQuery} from '../slices/prductApiSlice';
 
+
 const ProductPage = () => {
     const {id: productId} = useParams();
 
