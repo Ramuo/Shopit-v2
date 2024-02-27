@@ -4,7 +4,7 @@ import asyncHandler from '../middlewares/asyncHandler.js';
 import generateToken from '../utils/generateToken.js';
 import sendEmail from '../utils/sendEmail.js';
 import { getResetPasswordTemplate } from '../utils/emailTemplates.js';
-
+import {upload_file} from '../utils/cloudinary.js'
 
 
 //@desc     Get all users
@@ -162,10 +162,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
     const resetToken = user.getResetTokenPassword();
 
     await user.save({validateBeforeSave: false});
-
-    const resetUrl = `${req.protocol}://${req.get('host')}/api/users/resetpassword/${resetToken}`;
-
-    //const resetUrl = `${process.env.FRONTEND_URL}/api/users/resetpassword/${resetToken}`;
+ 
+    const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
 
     const message = getResetPasswordTemplate(user?.name, resetUrl);
     
@@ -193,7 +191,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 // @desc    Reset Password
-// @route   POST /api/users/resetpassword/:resettoken
+// @route   PUT /api/users/resetpassword/:resettoken
 // @access  Public
 const resetpassword = asyncHandler( async (req, res) => {
     //Get hashed token
@@ -228,7 +226,7 @@ const resetpassword = asyncHandler( async (req, res) => {
 
     generateToken(res, user._id)
 
-    res.status(200).json(user);
+    res.status(200).json({user});
 });
 
 
@@ -289,6 +287,23 @@ const deleteUser = asyncHandler(async(req, res) => {
     });
 });
 
+//@desc     Upload user avatar
+//@route    PUT /api/users/uploadavatar
+//@access   Private/admin
+const updloadAvatar = asyncHandler(async(req, res) => {
+    const avatarResponse = await upload_file(req.body.avatar, "shopit/avatars");
+
+    
+
+    const user = await User.findByIdAndUpdate(req?.user?._id, {
+        avatar: avatarResponse,
+    });
+    
+    res.status(200).json({
+        user,
+    });
+});
+
 
 
 
@@ -305,5 +320,6 @@ export {
    getUserDetails,
    updateUser,
    deleteUser,
+   updloadAvatar,
 }
 

@@ -7,7 +7,7 @@ import SearchBox from './SearchBox';
 
 import {
     useLogoutMutation,
-    useGetUserProfileQuery
+    // useGetUserProfileQuery
 } from '../slices/userApiSlice'
 import {logout} from '../slices/authSlice'
 

@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import {Spinner} from 'flowbite-react';
+// import {Spinner} from 'flowbite-react';
 // import Loader from '../components/Loader';
 import {toast} from 'react-toastify';
 
@@ -76,7 +76,7 @@ const LoginPage = () => {
                         />
                     </div>
         
-                    <Link to="/password/forgot" className="float-end mb-4">Forgot Password?</Link>
+                    <Link to="/forgotpassword" className="float-end mb-4">Mot de passe oublier?</Link>
         
                     <button 
                     id="login_button" 

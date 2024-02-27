@@ -39,6 +39,36 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 // }
             }),
         }),
+        updateProfile: builder.mutation({
+            query: (data) => ({
+                url: `${USERS_URL}/update`,
+                method: 'PUT',
+                body: data
+            }),
+            invalidatesTags: ['Users']
+        }),
+        uploadavatar: builder.mutation({
+            query: (data) => ({
+                url: `${USERS_URL}/uploadavatar`,
+                method: 'PUT',
+                body: data
+            }),
+            invalidatesTags: ['Users']
+        }),
+        forgotpassword: builder.mutation({
+            query: (data) => ({
+                url: `${USERS_URL}/forgotpassword`,
+                method: 'POST',
+                body: data
+            }),
+        }),
+        resetpassword: builder.mutation({
+            query: ({token, data}) => ({
+                url: `${USERS_URL}/resetpassword/${token}`,
+                method: 'PUT',
+                body: data
+            }),
+        }),
     })
 });
 
@@ -48,6 +78,10 @@ export const {
     useLoginMutation,
     useRegisterMutation,
     useLogoutMutation,
-    useGetUserProfileQuery
+    useGetUserProfileQuery,
+    useUpdateProfileMutation,
+    useUploadavatarMutation,
+    useForgotpasswordMutation,
+    useResetpasswordMutation
 } = userApiSlice;
 

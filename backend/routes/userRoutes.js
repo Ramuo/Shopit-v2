@@ -11,7 +11,8 @@ import {
     resetpassword,
     getUserDetails,
     updateUser,
-    deleteUser
+    deleteUser,
+    updloadAvatar
 } from '../controllers/userControllers.js';
 
 import {protect, authorize} from '../middlewares/authMiddleware.js';
@@ -28,6 +29,7 @@ router.route('/logout').post(logoutUser);
 router.route('/me').get(protect, getUserProfile);
 router.route('/updatepassword').put(protect, updateUserPassword);
 router.route('/update').put(protect,  updateProfile);
+router.route('/uploadavatar').put(protect,  updloadAvatar);
 router.route('/forgotpassword').post(forgotPassword );
 router.route('/resetpassword/:resettoken').put(resetpassword );
 router.route('/:id')
