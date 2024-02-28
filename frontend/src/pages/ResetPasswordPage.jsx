@@ -4,17 +4,22 @@ import {toast} from 'react-toastify';
 import {useNavigate, useParams} from 'react-router-dom';
 
 
-import {useResetpasswordMutation} from '../slices/userApiSlice';
+import {
+  useResetpasswordMutation
+} from '../slices/userApiSlice';
 
 const ResetPasswordPage = () => {
     const navigate = useNavigate();
-    const params = useParams();
+    const {id: params} = useParams();
 
 
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const {userInfo} = useSelector((state) => state.auth);
+
+
+  console.log(userInfo)
 
     const [resetpassword, {isLoading}] = useResetpasswordMutation();
 
@@ -33,7 +38,7 @@ const ResetPasswordPage = () => {
             return;
         }else{
             try {
-                await resetpassword({token: params?.token, password, confirmPassword }).unwrap();
+                await resetpassword({token: params?.token, password, confirmPassword });
                 toast.success("Mot de passe réinitialiser avec succèss");
                 navigate('/login');
               } catch (err) {
@@ -44,7 +49,6 @@ const ResetPasswordPage = () => {
 
     return (
         <>
-          {/* <MetaData title={"Reset Password"} /> */}
           <div className="row wrapper">
             <div className="col-10 col-lg-5">
               <form 
@@ -75,7 +79,7 @@ const ResetPasswordPage = () => {
                     type="password"
                     id="confirm_password_field"
                     className="form-control"
-                    name="confirm_password"
+                    name={confirmPassword}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />

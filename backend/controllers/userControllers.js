@@ -162,7 +162,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
     const resetToken = user.getResetTokenPassword();
 
     await user.save({validateBeforeSave: false});
- 
+
+  
     const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
 
     const message = getResetPasswordTemplate(user?.name, resetUrl);
@@ -217,8 +218,10 @@ const resetpassword = asyncHandler( async (req, res) => {
         throw new Error("Password do not match")
     }
 
-    //If we find the user & the token is not expired, then set new Password 
+
     user.password = req.body.password;
+    
+
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
@@ -323,3 +326,6 @@ export {
    updloadAvatar,
 }
 
+
+
+  // const resetUrl = `${req.protocol}://${req.get('host')}/api/users/resetpassword/${resetToken}`;

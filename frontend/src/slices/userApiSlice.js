@@ -68,6 +68,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: data
             }),
+            invalidatesTags: ['Users'],
         }),
     })
 });
@@ -82,6 +83,7 @@ export const {
     useUpdateProfileMutation,
     useUploadavatarMutation,
     useForgotpasswordMutation,
-    useResetpasswordMutation
+    useResetpasswordMutation,
+    useGetUserDetailsQuery
 } = userApiSlice;
 
