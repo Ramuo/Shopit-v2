@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
 
 //MIDDLEWARES
 app.use(notFound);
-app.use(errorHandler)
+app.use(errorHandler);
 
 //SERVER
 app.listen(port, () => console.log(`Server running on port ${port}`));

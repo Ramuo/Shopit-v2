@@ -13,12 +13,16 @@ import {logout} from '../slices/authSlice'
 
 
 const Header = () => {
+    const {cartItems} = useSelector((state) => state.cart);
     const {userInfo} = useSelector((state) => state.auth);
+
+    console.log(cartItems)
     
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [logoutApiCall] = useLogoutMutation();
+
 
     // const {data, isLoading, isError} = useGetUserProfileQuery();
     // console.log(data)
@@ -49,7 +53,9 @@ const Header = () => {
             <div className="col-12 col-md-5 mt-4 mt-md-0 text-center">
                 <Link to="/cart" style={{textDecoration: "none"}}>
                     <span id="cart" className="ms-3"> Panier </span>
-                    <span className="ms-1" id="cart_count">0</span>
+                    <span className="ms-1" id="cart_count">
+                        {cartItems?.length}
+                    </span>
                 </Link>
 
                 {userInfo ? (
@@ -112,13 +118,6 @@ export default Header;
 
 
 
-//    !isLoading && (
-//     <Link to="/login" 
-//     className="btn ms-4" 
-//     id="login_btn"
-//     > 
-//         Connexion 
-//     </Link>
-    //    )
+
 
 

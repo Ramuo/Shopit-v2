@@ -24,6 +24,8 @@ import UpdateProfilePage from './pages/UpdateProfilePage';
 import UploadavatarPage from './pages/UploadavatarPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import CartPage from './pages/CartPage';
+import ShippingPage from './pages/ShippingPage';
 
 //ROUTES
 const router = createBrowserRouter(
@@ -35,13 +37,16 @@ const router = createBrowserRouter(
       <Route path='/register' element={<RegisterPage/>}/>
       <Route path='/forgotpassword' element={<ForgotPasswordPage/>}/>
       <Route path='/resetpassword/:token' element={<ResetPasswordPage/>}/>
-
+      
+      
      
 
       <Route path='' element={<PrivateRoute/>}>
         <Route path='/me/profile' element={<ProfilePage/>}/>
         <Route path='/me/updateprofile' element={<UpdateProfilePage/>}/>
         <Route path='/me/uploadavatar' element={<UploadavatarPage/>}/>
+        <Route path='/cart' element={<CartPage/>}/>
+        <Route path='/shipping' element={<ShippingPage/>}/>
       </Route>
     </Route>
   )

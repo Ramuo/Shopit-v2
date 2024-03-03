@@ -10,7 +10,7 @@ import {
 
 const ResetPasswordPage = () => {
     const navigate = useNavigate();
-    const {id: params} = useParams();
+    const{id: token} = useParams();
 
 
     const [password, setPassword] = useState("");
@@ -21,7 +21,7 @@ const ResetPasswordPage = () => {
 
   console.log(userInfo)
 
-    const [resetpassword, {isLoading}] = useResetpasswordMutation();
+    const [resetpassword, {isLoading}] = useResetpasswordMutation(token);
 
     useEffect(() => {
         if(userInfo){
@@ -38,9 +38,9 @@ const ResetPasswordPage = () => {
             return;
         }else{
             try {
-                await resetpassword({token: params?.token, password, confirmPassword });
+                await resetpassword({password, confirmPassword });
                 toast.success("Mot de passe réinitialiser avec succèss");
-                navigate('/login');
+                navigate('/resetpassword/:token');
               } catch (err) {
                 toast.error(err?.data?.message || err.error);
               } 

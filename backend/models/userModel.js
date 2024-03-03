@@ -34,35 +34,36 @@ const userSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+
 //TO AUTHANTICATE USER PASSWORD
 userSchema.methods.matchPassword = async function(enteredPassword){
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
 //TO CRYPT PASSWORD WHEN REGISTERING NEW USER AND HASH IT
-userSchema.pre('save', async function(next){
-    if(!this.isModified('password')){
-        next();
-    };
+userSchema.pre("save", async function(next){
+  if(!this.isModified('password')){
+    next();
+  };
 
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+  const salt = await bcrypt.genSalt(10); 
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
 
-//GENERATE AND HASH PASSWORD TOKEN
-userSchema.methods.getResetTokenPassword = function () {
-  // Generate token
+//Generate and hash password Token
+userSchema.methods.getResetTokenPassword = function (){
+  //Generate Token
   const resetToken = crypto.randomBytes(20).toString('hex');
 
-  // Hash token and set to resetPasswordToken field
+  //Hash token and set it to resetPasswordToken field
   this.resetPasswordToken = crypto
     .createHash('sha256')
     .update(resetToken)
-    .digest('hex');
-
-  // Set token expire time
-  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+    .digest('hex')
+  
+  //Set token expiry
+  this.resetPasswordExpire = Date.now() + 30 * 60 * 1000; // 10mn
 
   return resetToken;
 };

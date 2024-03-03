@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link} from 'react-router-dom';
+import { useParams, Link,} from 'react-router-dom';
+import { useDispatch} from 'react-redux';
 import Loader from '../components/Loader';
 import {Alert} from 'flowbite-react';
 import StarRatings from 'react-star-ratings';
 
 
 import {useGetProductDetailsQuery} from '../slices/prductApiSlice';
+import { setCartItem } from '../slices/cartSlice';
 
 
 const ProductPage = () => {
     const {id: productId} = useParams();
+    const dispatch = useDispatch();
 
+    const [quantity, setQuantity] = useState(1);
     const [activeImg, setActiveImg] = useState('');
 
     const {
@@ -18,17 +22,50 @@ const ProductPage = () => {
         isLoading, 
         error
     } = useGetProductDetailsQuery(productId);
-    console.log(data)
-    // OPTIONAL
-    // const product = data?.product
+    const product = data?.product;
+
 
     useEffect(() => {
         setActiveImg(
-            data?.product?.images[0] 
-            ? data?.product?.images[0]?.url 
-            : data?.product?.name 
+            product?.images[0] 
+            ? product?.images[0]?.url 
+            : product?.name 
         )
-    }, [data?.product])
+    }, [product]);
+
+
+    const increseQty = () => {
+        const count = document.querySelector(".count");
+    
+        if (count.valueAsNumber >= product?.stock) return;
+    
+        const qty = count.valueAsNumber + 1;
+        setQuantity(qty);
+    };
+    
+    const decreseQty = () => {
+        const count = document.querySelector(".count");
+    
+        if (count.valueAsNumber <= 1) return;
+    
+        const qty = count.valueAsNumber - 1;
+        setQuantity(qty);
+    };
+
+
+    const setItemToCart = () => {
+        const cartItem = {
+          product: product?._id,
+          name: product?.name,
+          price: product?.price,
+          image: product?.images[0]?.url,
+          stock: product?.stock,
+          quantity,
+        };
+    
+        dispatch(setCartItem(cartItem));
+        // toast.success("Item added to Cart");
+    };
 
     return (
         <>
@@ -36,7 +73,7 @@ const ProductPage = () => {
                     <Loader/>
                 ) : error ? (
                     <Alert color='failure' className='mt-5'>
-                        {error?.data?.message}
+                        {error?.message}
                     </Alert>
                 ) : (
                     <div className="row d-flex justify-content-around">
@@ -45,13 +82,13 @@ const ProductPage = () => {
                                 <img
                                     className="d-block w-100"
                                     src={activeImg}
-                                    alt={data?.product?.name}
+                                    alt={product?.name}
                                     width="340"
                                     height="390"
                                 />
                             </div>
                             <div className="row justify-content-start mt-5">
-                                {data?.product?.images?.map((img) => (
+                                {product?.images?.map((img) => (
                                     <div className="col-2 ms-4 mt-2">
                                         <Link role="button">
                                             <img
@@ -71,14 +108,14 @@ const ProductPage = () => {
                         </div>
         
                         <div className="col-12 col-lg-5 mt-5">
-                            <h3>{data?.product?.name}</h3>
-                            <p id="product_id">{data?.product?._id}</p>
+                            <h3>{product?.name}</h3>
+                            <p id="product_id">{product?._id}</p>
         
                             <hr />
         
                             <div className=" ratings mt-auto d-flex"> 
                                 <StarRatings
-                                rating={data?.product?.ratings}
+                                rating={product?.ratings}
                                 starRatedColor='#ffb829'
                                 numberOfStars={5}
                                 name='rating'
@@ -86,37 +123,42 @@ const ProductPage = () => {
                                 starSpacing='1px'
                                 />
                                 <span id="no-of-reviews" className="pt-1 ps-2">
-                                    ({data?.product?.numOfReviews})
+                                    ({product?.numOfReviews})
                                 </span>
                             </div>
                             <hr />
         
-                            <p id="product_price">{data?.product?.price}</p>
+                            <p id="product_price">{product?.price}</p>
                             <div className="stockCounter d-inline">
-                                <span className="btn btn-danger minus">-</span>
+                                <span className="btn btn-danger minus" onClick={decreseQty}>
+                                -
+                                </span>
                                 <input
-                                    type="number"
-                                    className="form-control count d-inline"
-                                    value="1"
-                                    readonly
+                                type="number"
+                                className="form-control count d-inline"
+                                value={quantity}
+                                readonly
                                 />
-                                <span className="btn btn-primary plus">+</span>
+                                <span className="btn btn-primary plus" onClick={increseQty}>
+                                +
+                                </span>
                             </div>
                             <button
                             type="button"
                             id="cart_btn"
                             className="btn btn-primary d-inline ms-4"
-                            disabled=""
+                            disabled={product.stock <= 0}
+                            onClick={setItemToCart}
                             >
-                                Add to Cart
+                                + Panier
                             </button>
         
                             <hr />
         
                             <p>
                                 Statut: {" "}
-                                <span id="stock_status" className={data?.product.stock > 0 ? 'greenColor' : 'redColor'}>
-                                    {data?.product.stock > 0 ? 'En Stock' : 'Epuisé' }
+                                <span id="stock_status" className={product.stock > 0 ? 'greenColor' : 'redColor'}>
+                                    {product.stock > 0 ? 'En Stock' : 'Epuisé' }
                                 </span>
                             </p>
         
@@ -124,10 +166,10 @@ const ProductPage = () => {
         
                             <h4 className="mt-2">Description:</h4>
                             <p>
-                                {data?.product?.description}
+                                {product?.description}
                             </p>
                             <hr />
-                            <p id="product_seller mb-3">Sold by: <strong>{data?.product?.seller}</strong></p>
+                            <p id="product_seller mb-3">Sold by: <strong>{product?.seller}</strong></p>
         
                             <div className="alert alert-danger my-5" type="alert">
                                 Login to post your review.
