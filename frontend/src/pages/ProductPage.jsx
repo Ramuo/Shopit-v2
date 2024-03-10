@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link,} from 'react-router-dom';
-import { useDispatch} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import Loader from '../components/Loader';
 import {Alert} from 'flowbite-react';
 import StarRatings from 'react-star-ratings';
+import NewReview from '../components/NewReview';
+import ListReviews from '../components/ListReviews';
+
 
 
 import {useGetProductDetailsQuery} from '../slices/prductApiSlice';
@@ -23,6 +26,8 @@ const ProductPage = () => {
         error
     } = useGetProductDetailsQuery(productId);
     const product = data?.product;
+
+    const {userInfo} = useSelector((state) => state.auth);
 
 
     useEffect(() => {
@@ -169,15 +174,22 @@ const ProductPage = () => {
                                 {product?.description}
                             </p>
                             <hr />
-                            <p id="product_seller mb-3">Sold by: <strong>{product?.seller}</strong></p>
-        
-                            <div className="alert alert-danger my-5" type="alert">
-                                Login to post your review.
-                            </div>
+                            <p id="product_seller mb-3">Vendu par: <strong>{product?.seller}</strong></p>
+                            {userInfo ? (
+                                <NewReview productId={product?._id}/>
+                            ) : (
+                                <div className="alert alert-danger my-5" type="alert">
+                                    Connecter vous pour nous laiser un avis
+                                </div>
+                            )
+                            }
                         </div>
+                        
                     </div>
             )}
-
+            {product?.reviews?.length > 0 && (
+                <ListReviews reviews={product?.reviews} />
+            )}
         </>
     );
 };

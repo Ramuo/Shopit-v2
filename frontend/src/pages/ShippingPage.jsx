@@ -1,10 +1,15 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { countries } from "countries-list";
 import Meta from '../components/Meta';
+import CheckoutSteps from '../components/CheckoutSteps';
+
+
+import {saveShippingInfo} from '../slices/cartSlice'
 
 const ShippingPage = () => {
-    // const countriesList = Object.values(countries);
+    const countriesList = Object.values(countries);
   
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -15,22 +20,22 @@ const ShippingPage = () => {
     const [phoneNo, setPhoneNo] = useState("");
     const [country, setCountry] = useState("");
   
-    // const { shippingInfo } = useSelector((state) => state.cart);
+    const { shippingInfo } = useSelector((state) => state.cart);
   
-    // useEffect(() => {
-    //   if (shippingInfo) {
-    //     setAddress(shippingInfo?.address);
-    //     setCity(shippingInfo?.city);
-    //     setZipCode(shippingInfo?.zipCode);
-    //     setPhoneNo(shippingInfo?.phoneNo);
-    //     setCountry(shippingInfo?.country);
-    //   }
-    // }, [shippingInfo]);
+    useEffect(() => {
+      if (shippingInfo) {
+        setAddress(shippingInfo?.address);
+        setCity(shippingInfo?.city);
+        setZipCode(shippingInfo?.zipCode);
+        setPhoneNo(shippingInfo?.phoneNo);
+        setCountry(shippingInfo?.country);
+      }
+    }, [shippingInfo]);
   
     const submiHandler = (e) => {
       e.preventDefault();
   
-    //   dispatch(saveShippingInfo({ address, city, phoneNo, zipCode, country }));
+      dispatch(saveShippingInfo({ address, city, phoneNo, zipCode, country }));
       navigate("/confirm_order");
     };
   
@@ -38,7 +43,7 @@ const ShippingPage = () => {
       <>
         <Meta title={"Livraison"} />
   
-        {/* <CheckoutSteps shipping /> */}
+        <CheckoutSteps shipping />
   
         <div className="row wrapper mb-5">
           <div className="col-10 col-lg-5">
@@ -76,7 +81,7 @@ const ShippingPage = () => {
   
               <div className="mb-3">
                 <label htmlFor="phone_field" className="form-label">
-                  Phone No
+                  Téléphone
                 </label>
                 <input
                   type="tel"
@@ -116,11 +121,11 @@ const ShippingPage = () => {
                   onChange={(e) => setCountry(e.target.value)}
                   required
                 >
-                  {/* {countriesList?.map((country) => (
+                  {countriesList?.map((country) => (
                     <option key={country?.name} value={country?.name}>
                       {country?.name}
                     </option>
-                  ))} */}
+                  ))}
                 </select>
               </div>
   

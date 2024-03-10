@@ -26,6 +26,11 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import CartPage from './pages/CartPage';
 import ShippingPage from './pages/ShippingPage';
+import ConfirmOrderPage from './pages/ConfirmOrderPage';
+import PaymentMethodPage from './pages/PaymentMethodPage';
+import MyOdersPage from './pages/MyOdersPage';
+import OrderDetailsPage from './pages/OrderDetailsPage';
+import InvoicePage from './pages/InvoicePage';
 
 //ROUTES
 const router = createBrowserRouter(
@@ -47,6 +52,11 @@ const router = createBrowserRouter(
         <Route path='/me/uploadavatar' element={<UploadavatarPage/>}/>
         <Route path='/cart' element={<CartPage/>}/>
         <Route path='/shipping' element={<ShippingPage/>}/>
+        <Route path='/confirm_order' element={<ConfirmOrderPage/>}/>
+        <Route path='/payment_method' element={<PaymentMethodPage/>}/>
+        <Route path='/orders' element={<MyOdersPage/>}/>
+        <Route path='/order/:id' element={<OrderDetailsPage/>}/>
+        <Route path='/invoice/order/:id' element={<InvoicePage/>}/>
       </Route>
     </Route>
   )

@@ -1,7 +1,8 @@
 import React from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import Meta from '../components/Meta';
-import { Link } from 'react-router-dom';
+
 
 
 import { 
@@ -12,6 +13,7 @@ import {
 const CartPage = () => {
     const {cartItems} = useSelector((state) => state.cart);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
 
     
@@ -48,6 +50,9 @@ const CartPage = () => {
         dispatch(removeFromCart(id));
     };
 
+    const checkoutHandler = () => {
+        navigate('/shipping')
+    }
 
     return (
     <>
@@ -123,8 +128,10 @@ const CartPage = () => {
                             </span>
                         </p>
                         <hr />
-                        <button id="checkout_btn" className="btn btn-primary w-100">
-                            Check out
+                        <button id="checkout_btn" className="btn btn-primary w-100"
+                        onClick={checkoutHandler}
+                        >
+                            CONTINUER
                         </button>
                         </div>
                     </div>

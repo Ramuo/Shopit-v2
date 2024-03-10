@@ -17,7 +17,7 @@ const router = express.Router();
 
 router.route('/').get(protect, authorize("admin"), allOrders);
 router.route('/new').post(protect, newOrder);
-router.route('/mine').get(protect, myOrders);
+router.route('/orders').get(protect, myOrders);
 router.route('/:id')
     .get(protect, checkObjectId, getOrderDetails)
     .put(protect, authorize('admin'), checkObjectId, updateOrder )

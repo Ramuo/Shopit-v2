@@ -1,0 +1,111 @@
+import {useState, useEffect} from 'react';
+import StarRatings from 'react-star-ratings';
+import { toast } from "react-toastify";
+
+import {
+    useSubmitReviewMutation,
+    useCanUserReviewQuery
+} from '../slices/prductApiSlice'
+
+const NewReview = ({productId}) => {
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState("");
+
+    const [submitReview, { isLoading, error, isSuccess }] =
+    useSubmitReviewMutation();
+
+  const { data } = useCanUserReviewQuery(productId);
+  const canReview = data?.canReview;
+
+
+    useEffect(() => {
+        if (error) {
+        toast.error(error?.data?.message);
+        }
+
+        if (isSuccess) {
+        toast.success("Avis Posté");
+        }
+    }, [error, isSuccess]);
+
+    const submitHandler = () => {
+        const reviewData = { rating, comment, productId };
+        submitReview(reviewData);
+    }
+
+    return (
+        
+        <div>
+            {canReview && (
+                <button
+                id="review_btn"
+                type="button"
+                className="btn btn-primary mt-4"
+                data-bs-toggle="modal"
+                data-bs-target="#ratingModal"
+                >
+                    Votre Avis
+                </button>
+            )}
+
+            <div className="row mt-2 mb-5">
+                <div className="rating w-50">
+                    <div
+                    className="modal fade"
+                    id="ratingModal"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="ratingModalLabel"
+                    aria-hidden="true"
+                    >
+                        <div className="modal-dialog" role="document">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="ratingModalLabel">
+                                        Donner votre avis
+                                    </h5>
+                                    <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                    ></button>
+                                </div>
+                                <div className="modal-body">
+                                    <StarRatings
+                                    rating={rating}
+                                    starRatedColor="#ffb829"
+                                    numberOfStars={5}
+                                    name="rating"
+                                    changeRating={(e) => setRating(e)}
+                                    />
+                                    <textarea
+                                    name="review"
+                                    id="review"
+                                    className="form-control mt-4"
+                                    placeholder="Message..."
+                                    value={comment}
+                                    onChange={(e) => setComment(e.target.value)}
+                                    ></textarea>
+
+                                    <button
+                                    id="new_review_btn"
+                                    className="btn w-100 my-4 px-4"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                    onClick={submitHandler}
+                                    >
+                                        Envoyer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default NewReview
+

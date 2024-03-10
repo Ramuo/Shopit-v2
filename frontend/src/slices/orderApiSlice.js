@@ -1,11 +1,43 @@
 import { apiSlice } from "./apiSlice";
-import { ORDERS_URL } from "../constants";
+import { ORDERS_URL, STRIPE_URL } from "../constants";
 
 
 export const orderApiSlice = apiSlice.injectEndpoints({
-    endpoints: (builder) => ({})
+    endpoints: (builder) => ({
+        newOrder: builder.mutation({
+            query: (data) => ({
+                url: `${ORDERS_URL}/new`,
+                method: 'POST',
+                body: data
+            }),
+        }),
+        stripeCheckoutSession: builder.mutation({
+            query: (data) => ({
+                url: `${STRIPE_URL}/checkout_session`,
+                method: 'POST',
+                body: data
+            }),
+        }),
+        myOrders: builder.query({
+            query: () => ({
+                url: `${ORDERS_URL}/orders`,
+            }),
+            keepUnusedDataFor: 5,
+        }),
+        getOrderDetails: builder.query({
+            query: (id) => ({
+                url: `${ORDERS_URL}/${id}`,
+            }),
+            keepUnusedDataFor: 5,
+        }),
+    })
 });
 
 
 
-export const {} = orderApiSlice;
+export const {
+    useNewOrderMutation,
+    useStripeCheckoutSessionMutation,
+    useMyOrdersQuery,
+    useGetOrderDetailsQuery,
+} = orderApiSlice;

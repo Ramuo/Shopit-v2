@@ -1,4 +1,5 @@
 import Product from '../models/poroductModel.js';
+import Order from '../models/orderModel.js';
 import asyncHandler from '../middlewares/asyncHandler.js'
 import APIFilters from '../utils/APIfilters.js';
 
@@ -55,7 +56,7 @@ const newProduct = asyncHandler (async (req, res) => {
 //@route   GET api/product/:id
 //@access  Public
 const getProductDetails = asyncHandler (async (req, res) => {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate('reviews.user');
 
     if(!product){
         res.status(404);
@@ -111,48 +112,46 @@ const deleteProduct = asyncHandler(async(req, res) => {
 //@access   Private
 const createProductReview = asyncHandler(async(req, res) => {
     
-    //1- Let's get the rating and the comment from body
-    const {rating, comment} = req.body;
+    const { rating, comment, productId } = req.body;
 
-    //2- Let'us get the product
-    const product = await Product.findById(req.params.id);
+    const review = {
+    user: req?.user?._id,
+    rating: Number(rating),
+    comment,
+    };
 
-    //3- Let's check if the product was already reviewed
-    if(product){
-        const alreadyReviewed = product.reviews.find(
-            (review) => review.user.toString() === req.user._id.toString()
-        );
+    const product = await Product.findById(productId);
 
-        if(alreadyReviewed){
-            res.status(400);
-            throw new Error("Vous avez déjà laissé un avis");
-        };
-
-        //- Create a review object
-        const review = {
-            name: req.user.name,
-            rating: Number(rating),
-            comment,
-            user: req.user._id
-        };
-
-        //Let' us push the created review to review collection
-        product.reviews.push(review);
-
-        //Let's set numReviews = to product reviews length
-        product.numReviews = product.reviews.length;
-
-        //To GET the rating, add ratings with reduce then divide it by the reviews lenght
-        product.rating =
-            product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length;
-
-        await product.save();
-        res.status(201).json({message: 'Avis ajouté'});
-        
-    }else{
+    if (!product) {
         res.status(404);
-        throw new Error('Produit non trouvé');
+        throw new Error(" Aucun Produit trouvé")
     }
+
+    const isReviewed = product?.reviews?.find(
+        (r) => r.user.toString() === req?.user?._id.toString()
+    );
+
+    if (isReviewed) {
+    product.reviews.forEach((review) => {
+        if (review?.user?.toString() === req?.user?._id.toString()) {
+        review.comment = comment;
+        review.rating = rating;
+        }
+    });
+    } else {
+    product.reviews.push(review);
+    product.numOfReviews = product.reviews.length;
+    }
+
+    product.ratings =
+    product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+    product.reviews.length;
+
+    await product.save({ validateBeforeSave: false });
+
+    res.status(200).json({
+    success: true,
+    });
 });
 
 // @desc   Get Product Reviews
@@ -207,6 +206,24 @@ const deleteReview = asyncHandler (async (req, res) => {
     });
 });
 
+// @desc   Allow user to review product only when they bought it
+// @route  GET /api/products/can_review
+// @access Private
+const canReview = asyncHandler( async (req, res) => {
+    const orders = await Order.find({
+        user: req.user._id,
+        "orderItems.product": req.query.productId,
+    });
+
+    if(orders.length === 0){
+        return res.status(200).json({canReview: false});
+    }
+
+    res.status(200).json({
+        canReview: true,
+    })
+})
+
 
 export {
     newProduct,
@@ -217,4 +234,5 @@ export {
     createProductReview,
     getProductReviews,
     deleteReview,
+    canReview,
 }

@@ -24,7 +24,21 @@ export const productApiSlice = apiSlice.injectEndpoints({
                 url: `${PRODUCTS_URL}/${productId}`,
             }),
             keepUnusedDataFor: 5,
+            providesTags: ['Products']
         }),
+        submitReview: builder.mutation({
+            query: (data) => ({
+                url: `${PRODUCTS_URL}/reviews`,
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ['Products'],
+        }),
+        canUserReview: builder.query({
+            query: (productId) => ({
+                url: `${PRODUCTS_URL}/can_review/?productId=${productId}`
+            }),
+        })
     })
 });
 
@@ -32,5 +46,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useGetProductsQuery,
-    useGetProductDetailsQuery
+    useGetProductDetailsQuery,
+    useSubmitReviewMutation,
+    useCanUserReviewQuery,
 } = productApiSlice;

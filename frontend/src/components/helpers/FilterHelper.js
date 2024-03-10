@@ -10,4 +10,5 @@ export const getPriceQueryParams = (searchParams,  key, value) => {
     }
 
     return searchParams;
-}
+};
+
