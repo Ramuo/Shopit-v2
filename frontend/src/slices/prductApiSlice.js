@@ -38,7 +38,12 @@ export const productApiSlice = apiSlice.injectEndpoints({
             query: (productId) => ({
                 url: `${PRODUCTS_URL}/can_review/?productId=${productId}`
             }),
-        })
+        }),
+        getAllProduct: builder.query({
+            query: () => ({
+                url: `${PRODUCTS_URL}/products`
+            }),
+        }),
     })
 });
 
@@ -49,4 +54,5 @@ export const {
     useGetProductDetailsQuery,
     useSubmitReviewMutation,
     useCanUserReviewQuery,
+    useGetAllProductQuery
 } = productApiSlice;

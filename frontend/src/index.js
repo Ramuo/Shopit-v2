@@ -14,6 +14,7 @@ import App from './App';
 
 
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoutes from './components/AdminRoutes';
 
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
@@ -32,6 +33,9 @@ import MyOdersPage from './pages/MyOdersPage';
 import OrderDetailsPage from './pages/OrderDetailsPage';
 import InvoicePage from './pages/InvoicePage';
 
+import DasboardPage from './pages/admin/DasboardPage';
+import ListProductPage from './pages/admin/ListProductPage';
+
 //ROUTES
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,10 +46,8 @@ const router = createBrowserRouter(
       <Route path='/register' element={<RegisterPage/>}/>
       <Route path='/forgotpassword' element={<ForgotPasswordPage/>}/>
       <Route path='/resetpassword/:token' element={<ResetPasswordPage/>}/>
-      
-      
      
-
+      {/* User Roures */}
       <Route path='' element={<PrivateRoute/>}>
         <Route path='/me/profile' element={<ProfilePage/>}/>
         <Route path='/me/updateprofile' element={<UpdateProfilePage/>}/>
@@ -57,6 +59,12 @@ const router = createBrowserRouter(
         <Route path='/orders' element={<MyOdersPage/>}/>
         <Route path='/order/:id' element={<OrderDetailsPage/>}/>
         <Route path='/invoice/order/:id' element={<InvoicePage/>}/>
+      </Route>
+
+        {/* Admin Routes */}
+      <Route path='' element={<AdminRoutes/>}>
+        <Route path='/admin/dashboard' element={<DasboardPage/>}/>
+        <Route path='/admin/products' element={<ListProductPage/>}/>
       </Route>
     </Route>
   )

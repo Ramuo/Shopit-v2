@@ -30,6 +30,18 @@ export const orderApiSlice = apiSlice.injectEndpoints({
             }),
             keepUnusedDataFor: 5,
         }),
+        getSales: builder.query({
+            query: ({startDate, endDate}) => ({
+                url: `${ORDERS_URL}/get_sales/?startDate=${startDate}&endDate=${endDate}`,
+            }),
+            keepUnusedDataFor: 5,
+        }),
+        // getAllOrders: builder.query({
+        //     query: () => ({
+        //         url: `${ORDERS_URL}/orders}`,
+        //     }),
+        //     keepUnusedDataFor: 5,
+        // }),
     })
 });
 
@@ -40,4 +52,6 @@ export const {
     useStripeCheckoutSessionMutation,
     useMyOrdersQuery,
     useGetOrderDetailsQuery,
+    useLazyGetSalesQuery,
+    // useGetAllOrdersQuery
 } = orderApiSlice;

@@ -17,7 +17,7 @@ import APIFilters from '../utils/APIfilters.js';
 // });
 
 
-//@desc   Gell all Product
+//@desc   Create Products
 //@route  GET /api/products
 //@access Private/Admin
 const getProducts = asyncHandler (async (req, res) => {
@@ -224,6 +224,14 @@ const canReview = asyncHandler( async (req, res) => {
     })
 })
 
+//@desc     Get All Product
+//@route    GET /api/product
+//@access   Private/Admin
+const getAllProducts = asyncHandler(async(req, res) => {
+    const products = await Product.find({});
+
+    res.status(200).json({products});
+});
 
 export {
     newProduct,
@@ -235,4 +243,5 @@ export {
     getProductReviews,
     deleteReview,
     canReview,
+    getAllProducts
 }
