@@ -38,6 +38,8 @@ import ListProductPage from './pages/admin/ListProductPage';
 import NewProductPage from './pages/admin/NewProductPage';
 import UpdateProductPag from './pages/admin/UpdateProductPage';
 import UploadImages from './components/UploadImages';
+import ListOrdersPage from './pages/admin/ListOrdersPage';
+import EditOrderPage from './pages/admin/EditOrderPage';
 
 //ROUTES
 const router = createBrowserRouter(
@@ -71,6 +73,8 @@ const router = createBrowserRouter(
         <Route path='/admin/product/new' element={<NewProductPage/>}/>
         <Route path='/admin/products/:id' element={<UpdateProductPag/>}/>
         <Route path='/admin/products/:id/upload_images' element={<UploadImages/>}/>
+        <Route path='/admin/orders' element={<ListOrdersPage/>}/>
+        <Route path='/admin/orders/:id' element={<EditOrderPage/>}/>
       </Route>
     </Route>
   )

@@ -247,6 +247,8 @@ const uploadProductImages = asyncHandler (async (req, res) => {
     const uploader = async (image) => upload_file(image, "shopit/products");
   
     const urls = await Promise.all((req?.body?.images).map(uploader));
+
+    console.log(urls)
   
     product?.images?.push(...urls);
     await product?.save();

@@ -146,11 +146,11 @@ const deleteOrder = asyncHandler(async (req, res) => {
 //@desc     Get All orders
 //@route    GET /api/orders
 //@access   Private/Admin
-// const getAllOrders = asyncHandler(async(req, res) => {
-//     const orders = await Order.find({});
+const getAllOrders = asyncHandler(async(req, res) => {
+    const orders = await Order.find({});
 
-//     res.status(200).json({orders});
-// });
+    res.status(200).json({orders});
+});
 
 ////TO GET SALES DATA
 
@@ -248,6 +248,6 @@ export {
     getOrderDetails,
     updateOrder,
     deleteOrder,
-    // getAllOrders,
+    getAllOrders,
     getSales
 }

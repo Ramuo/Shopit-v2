@@ -36,12 +36,19 @@ export const orderApiSlice = apiSlice.injectEndpoints({
             }),
             keepUnusedDataFor: 5,
         }),
-        // getAllOrders: builder.query({
-        //     query: () => ({
-        //         url: `${ORDERS_URL}/orders}`,
-        //     }),
-        //     keepUnusedDataFor: 5,
-        // }),
+        getAllOrders: builder.query({
+            query: () => ({
+                url: `${ORDERS_URL}/orders`,
+            }),
+            keepUnusedDataFor: 5,
+        }),
+        updateOrder: builder.mutation({
+            query: ({id, data}) => ({
+                url: `${ORDERS_URL}/${id}`,
+                method: 'PUT',
+                body: data
+            }),
+        })
     })
 });
 
@@ -53,5 +60,6 @@ export const {
     useMyOrdersQuery,
     useGetOrderDetailsQuery,
     useLazyGetSalesQuery,
-    // useGetAllOrdersQuery
+    useGetAllOrdersQuery,
+    useUpdateOrderMutation,
 } = orderApiSlice;

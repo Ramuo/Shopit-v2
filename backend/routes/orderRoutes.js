@@ -6,7 +6,7 @@ import {
     updateOrder,
     deleteOrder,
     allOrders,
-    // getAllOrders,
+    getAllOrders,
     getSales
 } from '../controllers/orderControllers.js';
 import {protect, authorize} from '../middlewares/authMiddleware.js';
@@ -21,7 +21,7 @@ router.route('/').get(protect, authorize("admin"), allOrders);
 router.route('/new').post(protect, newOrder);
 router.route('/orders')
     .get(protect, myOrders)
-    // .get(protect, authorize('admin'), getAllOrders);
+    .get(protect, authorize('admin'), getAllOrders);
 router.route('/get_sales').get(protect, authorize("admin"), getSales);
 router.route('/:id')
     .get(protect, checkObjectId, getOrderDetails)
