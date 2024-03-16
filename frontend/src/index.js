@@ -35,6 +35,9 @@ import InvoicePage from './pages/InvoicePage';
 
 import DasboardPage from './pages/admin/DasboardPage';
 import ListProductPage from './pages/admin/ListProductPage';
+import NewProductPage from './pages/admin/NewProductPage';
+import UpdateProductPag from './pages/admin/UpdateProductPage';
+import UploadImages from './components/UploadImages';
 
 //ROUTES
 const router = createBrowserRouter(
@@ -65,6 +68,9 @@ const router = createBrowserRouter(
       <Route path='' element={<AdminRoutes/>}>
         <Route path='/admin/dashboard' element={<DasboardPage/>}/>
         <Route path='/admin/products' element={<ListProductPage/>}/>
+        <Route path='/admin/product/new' element={<NewProductPage/>}/>
+        <Route path='/admin/products/:id' element={<UpdateProductPag/>}/>
+        <Route path='/admin/products/:id/upload_images' element={<UploadImages/>}/>
       </Route>
     </Route>
   )

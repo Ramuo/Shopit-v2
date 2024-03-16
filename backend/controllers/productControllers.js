@@ -2,7 +2,7 @@ import Product from '../models/poroductModel.js';
 import Order from '../models/orderModel.js';
 import asyncHandler from '../middlewares/asyncHandler.js'
 import APIFilters from '../utils/APIfilters.js';
-
+import {upload_file} from '../utils/cloudinary.js'
 
 
 //@desc   Gell all Product
@@ -233,6 +233,29 @@ const getAllProducts = asyncHandler(async(req, res) => {
     res.status(200).json({products});
 });
 
+//@desc    Upload Product  images
+//@route   PUT api/product/:id/upload_images
+//@access  Private/admin
+const uploadProductImages = asyncHandler (async (req, res) => {
+    let product = await Product.findById(req?.params?.id);
+
+    if (!product) {
+        res.status(404);
+        throw new Error(" Aucun Produit trouvé")
+    }
+  
+    const uploader = async (image) => upload_file(image, "shopit/products");
+  
+    const urls = await Promise.all((req?.body?.images).map(uploader));
+  
+    product?.images?.push(...urls);
+    await product?.save();
+  
+    res.status(200).json({
+      product,
+    });
+});
+
 export {
     newProduct,
     getProducts,
@@ -243,5 +266,6 @@ export {
     getProductReviews,
     deleteReview,
     canReview,
-    getAllProducts
+    getAllProducts,
+    uploadProductImages
 }

@@ -76,7 +76,7 @@ const ListProductPage = () => {
                 <i className="fa fa-pencil"></i>
               </Link>
               <Link
-                to={`/products/${product?._id}/upload_images`}
+                to={`/admin/products/${product?._id}/upload_images`}
                 className="btn btn-outline-success ms-2"
               >
                 <i className="fa fa-image"></i>
@@ -100,9 +100,9 @@ const ListProductPage = () => {
   
     return (
       <AdminLayout>
-        <Meta title={"Liste Produit"} />
+        <Meta title={"Liste des Produits"} />
   
-        <h1 className="my-5">{data?.products?.length} Liste Produit</h1>
+        <h1 className="my-5">{data?.products?.length} Liste des Produits</h1>
   
         <MDBDataTable
           data={setProducts()}
