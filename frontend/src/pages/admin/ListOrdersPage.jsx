@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link} from "react-router-dom";
 import { MDBDataTable } from "mdbreact";
 import Loader from "../../components/Loader";
@@ -7,32 +7,34 @@ import Meta from "../../components/Meta";
 import AdminLayout from "../../components/AdminLayout";
 
 import {
-    useGetAllOrdersQuery
+    useGetAllOrdersQuery,
+    useDeleteOrderMutation,
 } from '../../slices/orderApiSlice';
 
 const ListOrdersPage = () => {
 
     const { data, isLoading, error } = useGetAllOrdersQuery();
   
-    console.log(data)
+    const [deleteOrder, {error: deleteError, isSuccess, isLoading: isDeleteLoading}] =  useDeleteOrderMutation();
+    
   
     useEffect(() => {
       if (error) {
         toast.error(error?.data?.message);
       }
   
-    //   if (deleteError) {
-    //     toast.error(deleteError?.data?.message);
-    //   }
+      if (deleteError) {
+        toast.error(deleteError?.data?.message);
+      }
   
-    //   if (isSuccess) {
-    //     toast.success("Product Deleted");
-    //   }
-    }, [error]);
+      if (isSuccess) {
+        toast.success("Product Deleted");
+      }
+    }, [error, deleteError, isSuccess]);
   
-    // const deleteProductHandler = (id) => {
-    //   deleteProduct(id);
-    // };
+    const deleteOrdertHandler = (id) => {
+      deleteOrder(id);
+    };
   
     const setOrders = () => {
       const orders = {
@@ -78,8 +80,8 @@ const ListOrdersPage = () => {
 
               <button
                 className="btn btn-outline-danger ms-2"
-                // onClick={() => deleteProductHandler(product?._id)}
-                // disabled={isDeleteLoading}
+                onClick={() => deleteOrdertHandler(order?._id)}
+                disabled={isDeleteLoading}
               >
                 <i className="fa fa-trash"></i>
               </button>

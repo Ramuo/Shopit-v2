@@ -7,7 +7,7 @@ import AdminLayout from "../../components/AdminLayout";
 
 import {
   useGetOrderDetailsQuery,
-  useUpdateOrderMutation
+  useUpdateOrderMutation,
 } from "../../slices/orderApiSlice";
 
 const EditOrderPage = () => {

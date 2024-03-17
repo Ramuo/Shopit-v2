@@ -59,6 +59,8 @@ const UploadImages = () => {
     const handleImagePreviewDelete = (image) => {
         const filteredImagesPreview = imagesPreview.filter((img) => img != image);
     
+        
+
         setImages(filteredImagesPreview);
         setImagesPreview(filteredImagesPreview);
     };
@@ -73,6 +75,8 @@ const UploadImages = () => {
         e.preventDefault();
 
         uploadProductImages({id: params?.id, body: images})
+
+        console.log(images)
     }
 
     return (

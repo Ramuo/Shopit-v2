@@ -29,6 +29,7 @@ export const orderApiSlice = apiSlice.injectEndpoints({
                 url: `${ORDERS_URL}/${id}`,
             }),
             keepUnusedDataFor: 5,
+            providesTags: ['orders']
         }),
         getSales: builder.query({
             query: ({startDate, endDate}) => ({
@@ -48,7 +49,14 @@ export const orderApiSlice = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: data
             }),
-        })
+            invalidatesTags: ["orders"]
+        }),
+        deleteOrder: builder.mutation({
+            query: (id) => ({
+                url: `${ORDERS_URL}/${id}`,
+                method: 'DELETE'
+            }),
+        }),
     })
 });
 
@@ -62,4 +70,5 @@ export const {
     useLazyGetSalesQuery,
     useGetAllOrdersQuery,
     useUpdateOrderMutation,
+    useDeleteOrderMutation
 } = orderApiSlice;
