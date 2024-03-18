@@ -1,13 +1,14 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams} from "react-router-dom";
 import { toast } from "react-toastify";
-import Meta from "../components/Meta";
 import AdminLayout from "../components/AdminLayout";
 
 import {
     useGetProductDetailsQuery,
     useUploadProductImagesMutation,
+    useDeleteProductImageMutation,
 } from '../slices/prductApiSlice';
+
 
 
 const UploadImages = () => {
@@ -21,7 +22,11 @@ const UploadImages = () => {
 
     const { data } = useGetProductDetailsQuery(params?.id);
 
-    const [uploadProductImages, {isLoading, error, isSuccess}] = useUploadProductImagesMutation()
+    const [uploadProductImages, {isLoading, error, isSuccess}] = useUploadProductImagesMutation();
+
+    const [deleteProductImage, {isLoading: isDeleteLoading, error: deleteError}] = useDeleteProductImageMutation();
+
+    
 
     useEffect(() => {
         if (data?.product) {
@@ -30,6 +35,10 @@ const UploadImages = () => {
     
         if (error) {
           toast.error(error?.data?.message);
+        };
+
+        if (deleteError) {
+          toast.error(deleteError?.data?.message);
         }
     
         if (isSuccess) {
@@ -37,7 +46,7 @@ const UploadImages = () => {
           toast.success("Images Uploaded");
           navigate("/admin/products");
         }
-      }, [data, error, isSuccess]);
+      }, [data, error, isSuccess, deleteError]);
 
     const onChange = (e) => {
         const files = Array.from(e.target.files);
@@ -69,15 +78,18 @@ const UploadImages = () => {
         if(fileInputRef.current){
             fileInputRef.current.value = "";
         }
-    }
+    };
 
     const submitHandler = (e) => {
         e.preventDefault();
 
-        uploadProductImages({id: params?.id, body: images})
+        uploadProductImages({id: params?.id, body: {images}})
 
-        console.log(images)
-    }
+    };
+
+    const deleteImage = (imgId) => {
+        deleteProductImage({ id: params?.id, body: { imgId } });
+    };
 
     return (
     <AdminLayout >
@@ -155,8 +167,9 @@ const UploadImages = () => {
                                             <button
                                             style={{backgroundColor: "#dc3545", borderColor: "#dc3545"}}
                                             className="btn btn-block btn-danger cross-button mt-1 py-0"
-                                            disabled="true"
                                             type="button"
+                                            disabled={isLoading || isDeleteLoading }
+                                            onClick={() => deleteImage(img?.public_id)}
                                             >
                                                 <i className="fa fa-trash"></i>
                                             </button>
@@ -173,7 +186,7 @@ const UploadImages = () => {
                     type="submit" 
                     className="btn w-100 py-2"
                     >
-                        {isLoading ? (
+                        {isLoading || isDeleteLoading ? (
                             <div className="d-flex justify-content-center">
                                 <div class="spinner-border spinner-border-sm text-light"  role="status" >
                                     <span class="visually-hidden">Loading...</span>

@@ -158,10 +158,9 @@ const createProductReview = asyncHandler(async(req, res) => {
 // @route  GET /api/products
 // @access Private/Admin
 const getProductReviews = asyncHandler (async (req, res) => {
-    const product = await Product.findById(req.query.id);
+    const product = await Product.findById(req.query.id).populate("reviews.user");
 
-    // .populate("reviews.user")
-
+    
     if (!product) {
         res.status(404);
         throw new Error('Produit non trouvé');
@@ -258,6 +257,31 @@ const uploadProductImages = asyncHandler (async (req, res) => {
     });
 });
 
+//@desc    delete Product  image
+//@route   PUT api/products/:id/delete_images
+//@access  Private/admin
+const deleteProductImage = asyncHandler( async ( req, res ) => {
+    let product = await Product.findById(req?.params?.id);
+
+    if (!product) {
+      return next(new ErrorHandler("Product not found", 404));
+    }
+  
+    const isDeleted = await delete_file(req.body.imgId);
+  
+    if (isDeleted) {
+      product.images = product?.images?.filter(
+        (img) => img.public_id !== req.body.imgId
+      );
+  
+      await product?.save();
+    }
+  
+    res.status(200).json({
+      product,
+    });
+});
+
 export {
     newProduct,
     getProducts,
@@ -269,5 +293,6 @@ export {
     deleteReview,
     canReview,
     getAllProducts,
-    uploadProductImages
+    uploadProductImages,
+    deleteProductImage
 }

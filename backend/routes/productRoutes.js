@@ -10,7 +10,8 @@ import {
     deleteReview,
     canReview,
     getAllProducts,
-    uploadProductImages
+    uploadProductImages,
+    deleteProductImage
 } from '../controllers/productControllers.js'
 import checkObjectId from '../middlewares/checkObjectId.js';
 import {protect, authorize} from '../middlewares/authMiddleware.js';
@@ -27,6 +28,7 @@ router.route('/reviews').delete(protect, authorize("admin"), deleteReview)// to 
 router.route('/can_review').get(protect, canReview);
 router.route('/products').get(protect, authorize('admin'), getAllProducts)
 router.route('/:id/upload_images').put(protect, authorize("admin"), uploadProductImages);
+router.route('/:id/delete_images').put(protect, authorize("admin"), deleteProductImage);
 router.route('/:id')
     .get(checkObjectId, getProductDetails)
     .put(protect, authorize("admin"), checkObjectId, updateProduct)

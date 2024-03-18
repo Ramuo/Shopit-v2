@@ -1,3 +1,4 @@
+import path from 'path';
 import express from "express";
 import dotenv from 'dotenv';
 dotenv.config();
@@ -22,11 +23,13 @@ connectDB();
 const app = express();
 
 //BODY PARSER MIDDLEWARE
-app.use(express.json({
-    verify: (req, res, buf) => {
+app.use( express.json({
+      limit: "10mb",
+      verify: (req, res, buf) => {
         req.rawBody = buf.toString();
-    },
-}));
+      },
+    })
+);
 app.use(express.urlencoded({extended: true}));
 
 
@@ -45,6 +48,19 @@ app.get('/', (req, res) => {
     res.send('API is running...')
 });
 
+//STATIC ROUTE
+const __dirname = path.resolve(); //Set __dir to current directory
+if(process.env.NODE_ENV === 'production'){
+    //set static folder
+    app.use(express.static(path.join(__dirname, '/frontend/build')));
+
+    //any route that is not api will redirect to index.html
+    app.get('*', (req, res) => 
+        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+    );
+}else{
+    app.get('/', (req, res) => res.send('API Running'));
+};
 
 //MIDDLEWARES
 app.use(notFound);

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
 import Meta from "../../components/Meta";
 import AdminLayout from "../../components/AdminLayout";
+// import Loader from "../../components/Loader";
 
 import {
   useGetOrderDetailsQuery,
