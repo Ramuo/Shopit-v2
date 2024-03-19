@@ -59,7 +59,7 @@ if(process.env.NODE_ENV === 'production'){
         res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
     );
 }else{
-    app.get('/', (req, res) => res.send('API Running'));
+    app.get('/', (req, res) => res.send('API Running...'));
 };
 
 //MIDDLEWARES
