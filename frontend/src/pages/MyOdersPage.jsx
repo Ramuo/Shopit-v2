@@ -31,7 +31,7 @@ const MyOdersPage = () => {
       dispatch(clearCart());
       navigate("/orders");
     }
-  }, [error]);
+  }, [error, navigate, dispatch, orderSuccess]);
 
   const setOrders = () => {
     const orders = {

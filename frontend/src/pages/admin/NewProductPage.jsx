@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate} from "react-router-dom";
-import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import Meta from "../../components/Meta";
 import AdminLayout from "../../components/AdminLayout";
@@ -36,7 +35,7 @@ const NewProductPage = () => {
         toast.success("Product created");
         navigate("/admin/products");
       }
-    }, [error, isSuccess]);
+    }, [error, isSuccess, navigate]);
   
     const onChange = (e) => {
       setProduct({ ...product, [e.target.name]: e.target.value });

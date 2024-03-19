@@ -16,7 +16,7 @@ const Filters = () => {
     useEffect(() => {
         searchParams.has("min") && setMin(searchParams.get("min"));
         searchParams.has("max") && setMin(searchParams.get("max"));
-    }, []);
+    }, [searchParams]);
 
 
     //Handle Category and Ratings filters

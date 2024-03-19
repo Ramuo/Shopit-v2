@@ -3,7 +3,7 @@ import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 // import {Spinner} from 'flowbite-react';
 // import Loader from '../components/Loader';
-import {toast} from 'react-toastify';
+import {toast} from 'react-toastify'; 
 
 
 import {setCredentials} from '../slices/authSlice';

@@ -1,5 +1,4 @@
 import { useEffect , useState} from "react";
-import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import Meta from "../../components/Meta";
@@ -41,7 +40,7 @@ const UpdateUserPage = () => {
       toast.success("User Updated");
       navigate("/admin/users");
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();

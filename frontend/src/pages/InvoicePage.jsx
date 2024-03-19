@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import "../invoice.css"
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import Loader from "../components/Loader";

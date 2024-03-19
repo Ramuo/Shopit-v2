@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams} from "react-router-dom";
-import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import Meta from "../../components/Meta";
 import AdminLayout from "../../components/AdminLayout";
@@ -52,7 +51,7 @@ const UpdateProductPage = () => {
       toast.success("Product updated");
       navigate("/admin/products");
     }
-  }, [error, isSuccess, data]);
+  }, [error, isSuccess, data, navigate]);
 
   const onChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });

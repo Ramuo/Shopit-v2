@@ -47,7 +47,7 @@ const PaymentMethodPage = () => {
     if (isSuccess) {
       navigate("/orders?order_success=true");
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, navigate]);
 
     const submitHandler = (e) => {
         e.preventDefault();

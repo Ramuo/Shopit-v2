@@ -13,7 +13,7 @@ const UpdateProfilePage = () => {
 
     const {userInfo} = useSelector((state) => state.auth);
 
-    const [updateProfile, {isLoading}] = useUpdateProfileMutation();
+    const [updateProfile] = useUpdateProfileMutation();
 
     useEffect(() => {
         if(userInfo){

@@ -1,5 +1,5 @@
 import React from 'react';
-import {useSearchParams, useNavigate} from 'react-router-dom';
+import {useSearchParams} from 'react-router-dom';
 import Meta from '../components/Meta';
 import {Alert} from 'flowbite-react';
 import ProductItem from '../components/ProductItem';
