@@ -10,7 +10,7 @@ import {
 
 const ResetPasswordPage = () => {
     const navigate = useNavigate();
-    const{id: token} = useParams();
+    const params = useParams();
 
 
     const [password, setPassword] = useState("");
@@ -21,30 +21,35 @@ const ResetPasswordPage = () => {
 
   console.log(userInfo)
 
-    const [resetpassword, {isLoading}] = useResetpasswordMutation(token);
+  const [resetPassword, { isLoading, error, isSuccess }] =
+  useResetpasswordMutation();
 
     useEffect(() => {
         if(userInfo){
             navigate('/')
-        }
-    }, [navigate,  userInfo]);
+        };
 
-    const submitHandler = async (e) => {
-        e.preventDefault();
-
-        //Let'us check is the pwd match
-        if(password !== confirmPassword){
-            toast.error("Mot de passe non identique");
-            return;
-        }else{
-            try {
-                await resetpassword({password, confirmPassword });
-                toast.success("Mot de passe réinitialiser avec succèss");
-                navigate('/resetpassword/:token');
-              } catch (err) {
-                toast.error(err?.data?.message || err.error);
-              } 
+        if (error) {
+          toast.error(error?.data?.message);
         }
+    
+        if (isSuccess) {
+          toast.success("Password reset successfully");
+          navigate("/login");
+        }
+    }, [navigate,  userInfo, error, isSuccess]);
+
+
+    const submitHandler = (e) => {
+      e.preventDefault();
+  
+      if (password !== confirmPassword) {
+        return toast.error("Password does not match. Try again!");
+      }
+  
+      const data = { password, confirmPassword };
+  
+      resetPassword({ token: params?.token, body: data });
     };
 
     return (

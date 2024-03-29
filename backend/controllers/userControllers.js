@@ -211,7 +211,6 @@ const  resetpassword = asyncHandler(async(req, res) => {
         resetPasswordExpire: {$gt: Date.now()} //Expiry is greatter than right now
     });
 
-    console.log(user.password)
 
     if(!user){
         res.status(400);

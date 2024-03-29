@@ -72,7 +72,7 @@ const UploadavatarPage = () => {
                             <figure className="avatar item-rtl">
                                 <img src={avatarPreview}
                                 className="rounded-circle" 
-                                alt="image" 
+                                alt="imageAvatar" 
                                 />
                             </figure>
                             </div>
