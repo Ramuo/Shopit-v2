@@ -14,11 +14,11 @@ const UserLayout = ({children}) => {
           url: "/me/updateprofile",
           icon: "fas fa-user",
         },
-        // {
-        //   name: "Upload Avatar",
-        //   url: "/me/uploadavatar",
-        //   icon: "fas fa-user-circle",
-        // },
+        {
+          name: "Upload Avatar",
+          url: "/me/uploadavatar",
+          icon: "fas fa-user-circle",
+        },
         {
           name: "Update Password",
         //   url: "/me/updatepassword",

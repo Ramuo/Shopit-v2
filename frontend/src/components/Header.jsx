@@ -70,7 +70,7 @@ const Header = () => {
                             >
                                 <figure className="avatar avatar-nav">
                                     <img
-                                        src={userInfo?.avatar 
+                                        src={userInfo.avatar 
                                             ? userInfo?.avatar?.url 
                                             :  default_avatar
                                         }

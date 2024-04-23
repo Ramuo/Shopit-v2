@@ -40,7 +40,7 @@ const ProductPage = () => {
 
 
     const increseQty = () => {
-        const count = document.querySelector(".count");
+        const count = document.querySelector(".count"); 
     
         if (count.valueAsNumber >= product?.stock) return;
     

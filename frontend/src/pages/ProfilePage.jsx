@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useSelector} from 'react-redux';
 import UserLayout from '../components/UserLayout';
 import default_avatar from '../images/default_avatar.jpg';
@@ -6,6 +6,8 @@ import default_avatar from '../images/default_avatar.jpg';
 const ProfilePage = () => {
     const {userInfo} = useSelector((state) => state.auth);
 
+    console.log(userInfo)
+   
   
     return (
         <UserLayout>
@@ -14,7 +16,7 @@ const ProfilePage = () => {
                     <figure className="avatar avatar-profile">
                     <img
                         className="rounded-circle img-fluid"
-                        src={userInfo?.avatar 
+                        src={userInfo.avatar 
                             ? userInfo?.avatar?.url 
                             :  default_avatar
                         }
