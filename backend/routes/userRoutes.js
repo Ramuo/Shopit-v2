@@ -13,7 +13,7 @@ import {
     updateUser,
     deleteUser,
     updloadAvatar,
-    updateUserProfile
+    // updateUserProfile
 } from '../controllers/userControllers.js';
 
 import {protect, authorize} from '../middlewares/authMiddleware.js';
@@ -31,7 +31,7 @@ router.route('/me').get(protect, getUserProfile);
 router.route('/updatepassword').put(protect, updateUserPassword);
 router.route('/update').put(protect,  updateProfile);
 router.route('/uploadavatar').put(protect,  updloadAvatar);
-router.route('/profile').put(protect,  updateProfile);
+// router.route('/profile').put(protect,  updateProfile);
 router.route("/forgotpassword").post(forgotPassword);
 router.route("/resetpassword/:resettoken").put(resetpassword);
 router.route('/:id')

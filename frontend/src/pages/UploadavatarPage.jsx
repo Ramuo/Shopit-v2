@@ -131,9 +131,10 @@ import React, { useEffect, useState } from "react";
 import UserLayout from '../components/UserLayout';
 import { useNavigate } from "react-router-dom";
 import {toast }from "react-toastify";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {useUploadavatarMutation} from '../slices/userApiSlice';
+import { setCredentials } from "../slices/authSlice";
 
 import default_avatar from '../images/default_avatar.jpg';
 
@@ -147,14 +148,12 @@ const UploadavatarPage = () => {
     
   
     const navigate = useNavigate();
+    const dispatch = useDispatch()
   
     const [uploadAvatar, { isLoading, error, isSuccess }] = useUploadavatarMutation();
   
     useEffect(() => {
         
-    //   if (userInfo) {
-    //     setAvatar(userInfo?.avatar?.url)
-    //   }
       if (error) {
         toast.error(error?.data?.message);
       }
@@ -172,9 +171,18 @@ const UploadavatarPage = () => {
         avatar,
       };
       
-      console.log(userData)
       uploadAvatar(userData);
-    };
+    }; 
+    // const submitHandler = async (e) => {
+    //   e.preventDefault();
+    //   try {
+    //     const res = await uploadAvatar({ avatar}).unwrap();
+    //     dispatch(setCredentials({...res}))
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+  
+    // };
   
     const onChange = (e) => {
       const reader = new FileReader();

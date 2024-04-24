@@ -4,7 +4,7 @@ import asyncHandler from '../middlewares/asyncHandler.js';
 import generateToken from '../utils/generateToken.js';
 import sendEmail from '../utils/sendEmail.js';
 import { getResetPasswordTemplate } from '../utils/emailTemplates.js';
-import {upload_file} from '../utils/cloudinary.js';
+import {delete_file, upload_file} from '../utils/cloudinary.js';
 
 
 //@desc     Get all users
@@ -79,7 +79,7 @@ const loginUser = asyncHandler(async(req, res) => {
         role: user.role,
         avatar: user.avatar.url
      
-    })
+    });
    }else{
     res.status(401);
     throw new Error("Email ou mot de passe invalide");
@@ -147,6 +147,24 @@ const updateProfile = asyncHandler(async(req, res) => {
     user,
     });
 });
+
+//@desc     Upload user avatar
+//@route    PUT /api/users/uploadavatar
+//@access   Private/admin
+const updloadAvatar = asyncHandler(async(req, res) => {
+    const avatarResponse = await upload_file(req.body.avatar, "shopit/avatars");
+
+    if(req?.user?.avatar?.url){
+        await delete_file(req?.user?.avatar?.public_id)
+    }
+
+    const user = await User.findByIdAndUpdate(req?.user?._id, {
+        avatar: avatarResponse,
+    });
+    
+    res.status(200).json({user});
+});
+
 
 
 
@@ -296,59 +314,6 @@ const deleteUser = asyncHandler(async(req, res) => {
     });
 });
 
-//@desc     Upload user avatar
-//@route    PUT /api/users/uploadavatar
-//@access   Private/admin
-const updloadAvatar = asyncHandler(async(req, res) => {
-    const avatarResponse = await upload_file(req.body.avatar, "shopit/avatars");
-
-    const user = await User.findByIdAndUpdate(req?.user?._id, {
-        avatar: avatarResponse,
-    });
-    
-    // res.status(200).json({
-    //     user,
-    // });
-    res.status(200).json({user});
-});
-
-
-/////Try to update user Photo
-//@desc     Update user profile
-//@route    PUT /api/users/profile
-//@access   Private
-const updateUserProfile = asyncHandler(async(req, res) => {
-    const user = await User.findById(req.user._id);
-
-    //Check if user 
-    if(user){
-        user.name = req.body.name || user.name;
-        user.email = req.body.email || user.email;
-        user.profilePicture = req.body.profilePicture || user.profilePicture;
-
-        //Let's check if in the request sent, if there is a password
-        if(req.body.password){
-            user.password = req.body.password
-        };
-
-        //Save the updated changes
-        const updatedUser = await user.save();
-
-        res.status(200).json({
-            _id: updatedUser._id,
-            name: updatedUser.name,
-            email: updatedUser.email,
-            // isAdmin: updatedUser.isAdmin,
-            profilePicture: updatedUser.profilePicture
-        });
-    }else{
-        res.status(404);
-        throw new Error("Utilisateur non trové")
-    };
-
-});
-
-
 
 
 export {
@@ -365,7 +330,6 @@ export {
    updateUser,
    deleteUser,
    updloadAvatar,
-   updateUserProfile
 }
 
 

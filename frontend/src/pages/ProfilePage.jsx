@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {useSelector} from 'react-redux';
 import UserLayout from '../components/UserLayout';
 import default_avatar from '../images/default_avatar.jpg';
 
 const ProfilePage = () => {
     const {userInfo} = useSelector((state) => state.auth);
+   const [avatar, setAvatar] = useState("")
 
-    console.log(userInfo)
-   
-  
+   useEffect(() => {
+    if(userInfo){
+        setAvatar(userInfo.avatar)
+    }
+   }, {})
+ 
     return (
         <UserLayout>
             <div className="row justify-content-around mt-5 user-info">
@@ -16,10 +20,11 @@ const ProfilePage = () => {
                     <figure className="avatar avatar-profile">
                     <img
                         className="rounded-circle img-fluid"
-                        src={userInfo.avatar 
-                            ? userInfo?.avatar?.url 
-                            :  default_avatar
-                        }
+                        // src={userInfo.avatar 
+                        //     ? userInfo?.avatar?.url 
+                        //     :  default_avatar
+                        // }
+                        src={userInfo.avatar || default_avatar }
                         alt={userInfo?.name}
                     />
                     </figure>
