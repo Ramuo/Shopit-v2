@@ -36,7 +36,7 @@ const Header = () => {
             console.log(err);
         }
     }
-    
+     
 
     return (
         <nav className="navbar row">
