@@ -9,9 +9,9 @@ const ProfilePage = () => {
 
    useEffect(() => {
     if(userInfo){
-        setAvatar(userInfo.avatar)
+        setAvatar(userInfo.avatar) 
     }
-   }, {})
+   }, [])
  
     return (
         <UserLayout>
